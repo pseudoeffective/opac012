@@ -1,0 +1,171 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%  mathmemo.sty                                            %%%%%%
+%%%%%%                                                          %%%%%%
+%%%%%%  Style file for short notes / discussion summaries.      %%%%%%
+%%%%%%  D. Anderson                                             %%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mathmemo}[2026/05/18 v0.1 Notes and short reports]
+
+%%%%%%%%%% Core packages %%%%%%%%%%
+\RequirePackage{amsmath,amssymb,amsthm,euscript,mathrsfs,bm}
+\RequirePackage{dsfont}            % for \mathds
+\RequirePackage[shortlabels]{enumitem}
+\RequirePackage{tikz-cd}
+\RequirePackage{setspace}
+
+%%%%%%%%%% Fonts %%%%%%%%%%
+% Palatino-based: blander than ebgaramond, clearly distinct from your paper style.
+\RequirePackage{newpxtext}
+\RequirePackage{newpxmath}
+
+\setstretch{1.15}
+
+%%%%%%%%%% Page geometry %%%%%%%%%%
+\RequirePackage[margin=1in,headheight=15pt,headsep=12pt]{geometry}
+
+%%%%%%%%%% Header / footer %%%%%%%%%%
+\RequirePackage{fancyhdr}
+
+% A short running title and date can be set by the document.
+\providecommand{\memotitle}{}
+\providecommand{\memodate}{\today}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape\memodate}
+\fancyhead[C]{\small\scshape\memotitle}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Plain pagestyle (used by \maketitle and section openings):
+% keep the same running header as \fancy so the title page shows it too.
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyhead[L]{\small\itshape\memodate}%
+  \fancyhead[C]{\small\scshape\memotitle}%
+  \fancyhead[R]{\small\thepage}%
+  \renewcommand{\headrulewidth}{0.4pt}%
+  \renewcommand{\footrulewidth}{0pt}%
+}
+
+% amsart's \maketitle internally issues \thispagestyle{empty}, which blanks
+% the title page header. Patch \maketitle so that after it runs we restore
+% the fancy header on the title page.
+\let\mathmemo@oldmaketitle\maketitle
+\renewcommand{\maketitle}{%
+  \mathmemo@oldmaketitle%
+  \thispagestyle{fancy}%
+}
+
+%%%%%%%%%% Hyperref (load late) %%%%%%%%%%
+\RequirePackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue!50!black]{hyperref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%  Macros                                                  %%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Blackboard bold (via \mathds, matching your paper setup)
+\newcommand{\C}{\mathds{C}}
+\newcommand{\N}{\mathds{N}}
+\newcommand{\Q}{\mathds{Q}}
+\newcommand{\R}{\mathds{R}}
+\newcommand{\Z}{\mathds{Z}}
+\renewcommand{\P}{\mathds{P}}
+\newcommand{\A}{\mathds{A}}
+\newcommand{\G}{\mathds{G}}
+\newcommand{\B}{\mathds{B}}
+\newcommand{\E}{\mathds{E}}
+\newcommand{\bV}{\mathds{V}}
+\newcommand{\bX}{\mathds{X}}
+
+% Calligraphic
+\renewcommand{\O}{\mathcal{O}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\cH}{\mathcal{H}}
+
+% Fraktur
+\newcommand{\lieg}{\mathfrak{g}}
+\newcommand{\liep}{\mathfrak{p}}
+\newcommand{\lieb}{\mathfrak{b}}
+\newcommand{\lien}{\mathfrak{n}}
+\newcommand{\liet}{\mathfrak{t}}
+\newcommand{\lieh}{\mathfrak{h}}
+\newcommand{\liem}{\mathfrak{m}}
+
+% Shorthands
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\pt}{\mathrm{pt}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\on}{\operatorname}
+\newcommand{\del}{\partial}
+\newcommand{\tto}{\twoheadrightarrow}
+\newcommand{\isom}{\cong}
+\newcommand{\ul}{\underline}
+\newcommand{\exterior}{\textstyle\bigwedge}
+
+\renewcommand{\setminus}{\smallsetminus}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\tilde}{\widetilde}
+\renewcommand{\hat}{\widehat}
+\renewcommand{\bar}{\overline}
+
+% Common Lie-theory / flag-variety operators
+\newcommand{\Gr}{\mathit{Gr}}
+\newcommand{\Fl}{\mathit{Fl}}
+
+% Math operators
+\DeclareMathOperator{\Sym}{Sym}
+\DeclareMathOperator{\codim}{codim}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Lie}{Lie}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\gr}{gr}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Span}{Span}
+\DeclareMathOperator{\Bl}{Bl}
+\DeclareMathOperator{\ev}{ev}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Coh}{Coh}
+\DeclareMathOperator{\Sing}{Sing}
+
+% Comments / excise (handy for drafts)
+\newcommand{\comment}{\marginpar}
+\newcommand{\excise}[1]{}
+
+%%%%%%%%%% Theorem environments (small-caps, matching your style) %%%%%%%%%%
+\newtheoremstyle{scthm}%
+{}{}{\itshape}{}{\scshape}{.}{ }{}
+\newtheoremstyle{scdef}%
+{}{}{}{}{\scshape}{.}{ }{}
+
+\theoremstyle{scthm}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\theoremstyle{scdef}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{notation}[theorem]{Notation}
+
+\endinput

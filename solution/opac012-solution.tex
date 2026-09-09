@@ -1,0 +1,474 @@
+\documentclass[11pt]{amsart}
+\usepackage{mathmemo}
+\renewcommand{\memotitle}{OPAC-012 solution}
+\renewcommand{\memodate}{September 9, 2026}
+
+
+%\usepackage[T1]{fontenc}
+%\usepackage{lmodern}
+%\usepackage{microtype}
+%\usepackage[margin=1.25in]{geometry}
+%\usepackage{mathtools,amssymb}
+\usepackage{xcolor}
+%\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+%\newcommand{\N}{\mathbb N}
+%\newcommand{\Z}{\mathbb Z}
+\newcommand{\Fq}{\mathds F_q}
+\newcommand{\qbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
+\newcommand{\cS}{\mathfrak S}
+
+\title[Positivity for alternating sums of $q$-factorials]
+  {Coefficientwise positivity for\protect\\ alternating sums of $q$-factorials}
+\author{Claude (Fable-5.1), with ChatGPT-6 (Astra)}
+ \thanks{Directed by D.~E.~Anderson, \texttt{anderson.2804@math.osu.edu}}
+\date{September 9, 2026}
+
+%\theoremstyle{plain}
+%\newtheorem{theorem}{Theorem}[section]
+%\newtheorem{proposition}[theorem]{Proposition}
+%\newtheorem{lemma}[theorem]{Lemma}
+%\newtheorem{corollary}[theorem]{Corollary}
+%\theoremstyle{remark}
+%\newtheorem{remark}[theorem]{Remark}
+
+\begin{document}
+
+\begin{abstract}
+We prove that the alternating sum
+$\sum_{i=0}^{k}(-1)^i\binom ki[m-i]!_q$ has nonnegative coefficients
+whenever $m\ge 2k-1$. For $k\ge3$, this range is exact.
+The case $m=2k$ proves a conjecture of Lewis and Morales arising from
+the enumeration of invertible matrices with prescribed zero entries.
+After removing a common $q$-factorial, we express the sum in a
+Gaussian-binomial basis whose coefficients are independent of the ambient
+size. Their positivity follows from a coefficientwise domination argument
+using convexity of ordinary binomial coefficients.
+\end{abstract}
+
+\maketitle
+
+\section{The conjecture and the normalized sum}
+
+For a nonnegative integer $r$, write
+\[
+ [r]=[r]_q=1+q+\cdots+q^{r-1},\qquad
+ [r]!=[1][2]\cdots[r],
+\]
+with $[0]=0$ and $[0]!=1$. Throughout, $\N$ includes $0$, so
+membership in $\N[q]$ means coefficientwise nonnegativity.
+
+Lewis and Morales conjectured that
+\[
+ \sum_{i=0}^{n}(-1)^i\binom ni[2n-i]!\in\N[q]
+ \qquad(n\ge1).
+\]
+This is Conjecture~6.8 of \cite{LM}, also known as OPAC-012.
+The sum occurs, up to a power of $q$, in the reduced count of invertible
+$2n\times2n$ matrices over a finite field with $n$ prescribed zero entries
+in distinct rows and columns. This counting interpretation explains its
+nonnegative values at prime powers, but does not imply that its
+coefficients are nonnegative. We prove the following stronger statement.
+
+\begin{theorem}\label{thm:main}
+For integers $0\le k\le m$, set
+\begin{equation}\label{eq:S}
+ S_{k,m}(q)=\sum_{i=0}^{k}(-1)^i\binom ki[m-i]!.
+\end{equation}
+If $m\ge2k-1$, then $S_{k,m}(q)\in\N[q]$. For $k\ge3$, this bound is
+sharp: $S_{k,m}(q)$ has a negative coefficient whenever
+$k\le m\le2k-2$.
+In particular, $S_{n,2n}(q)\in\N[q]$ for every $n\ge1$.
+\end{theorem}
+
+The normalization that makes the proof work is to remove the common
+factor $[m-k]!$. For $a,r\ge0$, put
+\[
+ \Pi_r(a)=\prod_{s=1}^{r}[a+s],\qquad \Pi_0(a)=1,
+\]
+and define
+\begin{equation}\label{eq:F}
+ F_t(a)=\sum_{r=0}^{t}(-1)^{t-r}\binom tr\Pi_r(a)
+ \qquad(t,a\ge0).
+\end{equation}
+Changing the index in \eqref{eq:S} gives
+\begin{equation}\label{eq:SF}
+ S_{k,m}(q)=[m-k]!\,F_k(m-k).
+\end{equation}
+Thus the range $m\ge2k-1$ becomes $a\ge k-1$.
+
+The proof now has two steps. In Section~\ref{sec:expansion}, we expand
+$F_t(a)$ as a sum of one explicit term, nonnegative for $a\ge t-1$,
+and Gaussian binomial coefficients with universal coefficients
+$\Theta_{t,j}(q)$. These coefficients do not depend on $a$.
+In Section~\ref{sec:positivity}, we prove their nonnegativity by showing
+that the leading positive term dominates all the other terms in their
+alternating definition. The underlying comparison reduces to convexity
+of ordinary binomial coefficients. The proof of positivity is then
+complete; Section~\ref{sec:sharpness} establishes sharpness by computing
+the first two possible nonzero coefficients, and
+Section~\ref{sec:matrices} records the matrix-counting interpretation.
+
+\section{A universal Gaussian-binomial expansion}\label{sec:expansion}
+
+For $a\ge1$ and $j\ge0$, we use the product formula
+\[
+ \qbinom{a+j-1}{j}
+ =\frac{\prod_{s=0}^{j-1}[a+s]}{[j]!}.
+\]
+For $a=0$, the right side defines the same notation: it is $1$ when
+$j=0$ and $0$ otherwise. All these polynomials belong to $\N[q]$.
+We also use $[b]=(1-q^b)/(1-q)$ for negative integers $b$; identities
+involving these expressions are understood in $\Z[q,q^{-1}]$.
+
+The universal coefficients in our expansion have the following explicit
+form. For $t\ge1$, put $N=t-1$ and define, for $0\le j\le N$,
+\begin{equation}\label{eq:Theta}
+ \Theta_{t,j}(q)
+ =[N]![N]+\sum_{d=1}^{N-j}(-1)^{d+1}q^{N-d}[N-d]!
+       \sum_{s=d}^{N}\binom{s}{d}q^{N-s}.
+\end{equation}
+In particular, $\Theta_{1,0}=0$. Their nonnegativity is not apparent
+from this alternating sum; it will be proved in the next section.
+
+\begin{proposition}[Universal expansion]\label{prop:decomposition}
+For every $t\ge1$ and $a\ge0$,
+\begin{equation}\label{eq:positive-decomposition}
+\begin{split}
+ F_t(a)={}&q^t[a-t+1]\prod_{r=1}^{t-1}[a+r]\\
+ &\quad+q^{a+1}\sum_{j=0}^{t-1}q^j
+       \qbinom{a+j-1}{j}\Theta_{t,j}(q).
+\end{split}
+\end{equation}
+\end{proposition}
+
+The first summand vanishes at $a=t-1$ and is nonnegative for
+$a\ge t-1$. In the remaining sum, all dependence on $a$, apart from
+the common power $q^{a+1}$, lies in the Gaussian binomial coefficients.
+Consequently, proving $\Theta_{t,j}\in\N[q]$ will establish
+$F_t(a)\in\N[q]$ throughout the required range.
+
+\begin{proof}
+We first isolate the explicit summand by induction on $t$, and then
+expand the remainder in Gaussian binomial coefficients. The two
+identities we need are
+\begin{align}
+ F_{t+1}(a)&=[a+1]F_t(a+1)-F_t(a),\label{eq:Frec}\\
+ \Pi_r(a)&=\sum_{j=0}^{r}q^j[r]!\qbinom{a+j-1}{j}.
+ \label{eq:basis}
+\end{align}
+The first follows from Pascal's identity and
+$[a+1]\Pi_r(a+1)=\Pi_{r+1}(a)$. For the second, iterate
+\[
+ \Pi_r(a)=[r]\Pi_{r-1}(a)
+       +q^r\prod_{s=0}^{r-1}[a+s],
+\]
+which follows from $[a+r]=[r]+q^r[a]$.
+
+To keep the induction readable, abbreviate the inner sums in
+\eqref{eq:Theta} by
+\begin{equation}\label{eq:lambda}
+ \lambda_{N,d}=\sum_{s=d}^{N}\binom{s}{d}q^{N-s}
+ \qquad(0\le d\le N),
+\end{equation}
+and set them to zero outside this range. Pascal's identity gives
+\begin{equation}\label{eq:lambdarec}
+ \lambda_{N+1,d}=\lambda_{N,d}+\lambda_{N,d-1}
+ \quad(d\ge1),\qquad \lambda_{N,0}=[N+1].
+\end{equation}
+Write the proposed explicit summand as
+\[
+ \mu_t(a)=q^t[a-t+1]\Pi_{t-1}(a).
+\]
+For the induction, define a remainder $T_t(a)=\sum_r g^{(t)}_r\Pi_r(a)$,
+where
+\[
+ g^{(t)}_{t-1}=[t-1],\qquad
+ g^{(t)}_r=(-1)^{t-r}q^r\lambda_{t-1,t-1-r}
+ \quad(0\le r\le t-2),
+\]
+and $g^{(t)}_r=0$ otherwise. We claim that
+\begin{equation}\label{eq:FT}
+ F_t(a)=\mu_t(a)+q^{a+1}T_t(a).
+\end{equation}
+
+The base case is $F_1(a)=q[a]=\mu_1(a)$, with $T_1=0$.
+To pass from $t$ to $t+1$, the explicit term satisfies
+\begin{equation}\label{eq:murec}
+\begin{split}
+ [a+1]\mu_t(a+1)-\mu_t(a)
+ ={}&\mu_{t+1}(a)\\
+ &+q^{a+1}\bigl([2t-1]\Pi_{t-1}(a)+\Pi_t(a)\bigr).
+\end{split}
+\end{equation}
+For completeness, substitution reduces this identity to
+\[
+ [a-t+2][a+t]-[a-t+1]-q[a-t][a+t]
+ =q^{a-t+1}\bigl([2t-1]+[a+t]\bigr),
+\]
+which follows from $[x]-[y]=q^y[x-y]$.
+Meanwhile, the remainder transforms according to
+\[
+ q[a+1]\Pi_r(a+1)-\Pi_r(a)=q\Pi_{r+1}(a)-\Pi_r(a).
+\]
+Applying \eqref{eq:Frec} to \eqref{eq:FT}, we therefore obtain the
+desired formula at $t+1$ precisely when
+\begin{equation}\label{eq:grec}
+ g^{(t+1)}_r=[2t-1]\delta_{r,t-1}+\delta_{r,t}
+       +qg^{(t)}_{r-1}-g^{(t)}_r,
+\end{equation}
+where $\delta$ is the Kronecker delta. For $0\le r\le t-2$, this is
+\eqref{eq:lambdarec}. At $r=t-1$, it follows from
+\[
+ [2t-1]-[t-1]=q^{t-1}[t],\qquad
+ \lambda_{t,1}=[t]+\lambda_{t-1,1},
+\]
+and at $r=t$, it is $[t]=1+q[t-1]$. This proves \eqref{eq:FT}.
+
+Finally, insert \eqref{eq:basis} into $T_t(a)$. With $N=t-1$, the
+coefficient multiplying $q^j\qbinom{a+j-1}{j}$ is
+\[
+ \sum_{r=j}^{t-1}[r]!\,g^{(t)}_r
+ =[N]![N]+\sum_{d=1}^{N-j}(-1)^{d+1}q^{N-d}[N-d]!\lambda_{N,d}
+ =\Theta_{t,j},
+\]
+where $d=N-r$. Thus \eqref{eq:FT} is exactly
+\eqref{eq:positive-decomposition}.
+\end{proof}
+
+\section{Positivity of the universal coefficients}\label{sec:positivity}
+
+We now prove that the alternating sum \eqref{eq:Theta} is nonnegative.
+The useful comparison is stronger than a pairing of consecutive terms:
+its leading term dominates the sum of all the other terms with their
+signs removed. To carry out this comparison, fix $N\ge1$ and package
+the summands as
+\begin{equation}\label{eq:E}
+ E_0=[N]![N],\qquad
+ E_d=q^{N-d}[N-d]!\lambda_{N,d}\quad(1\le d\le N),
+\end{equation}
+where $\lambda_{N,d}$ is the positive polynomial in \eqref{eq:lambda}.
+
+\begin{lemma}[Coefficientwise domination]\label{lem:domination}
+For $N\ge1$ and $0\le D\le N$,
+\[
+ E_0-\sum_{d=1}^{D}E_d\in\N[q].
+\]
+\end{lemma}
+
+\begin{proof}
+We remove the common factorial before comparing coefficients. Define
+\begin{equation}\label{eq:Lambda}
+ \Lambda_0=[N],\qquad
+ \Lambda_D=[N-D+1]\Lambda_{D-1}-q^{N-D}\lambda_{N,D}.
+\end{equation}
+Then induction gives
+\begin{equation}\label{eq:ELambda}
+ [N-D]!\Lambda_D=E_0-\sum_{d=1}^{D}E_d.
+\end{equation}
+The point of this normalization is that the low-degree coefficients of
+$\Lambda_D$ have a simple form. More precisely, we prove by induction that
+\begin{equation}\label{eq:Lambda-positive}
+ \Lambda_D=P_D+q^{N-D+1}Q_D,\qquad
+ P_D=\sum_{r=0}^{N-D-1}\binom{r+D}{D}q^r,\qquad Q_D\in\N[q].
+\end{equation}
+Empty sums are zero. The base case is $\Lambda_0=[N]=P_0$, with $Q_0=0$.
+
+Suppose \eqref{eq:Lambda-positive} holds for $D-1$, and put $L=N-D$.
+In the recurrence \eqref{eq:Lambda}, the part involving $Q_{D-1}$ is
+already nonnegative. The part to be examined is
+\[
+ [L+1]P_{D-1}-q^L\lambda_{N,D}.
+\]
+For $0\le r<L$, its coefficient of $q^r$ is
+\[
+ \sum_{v=0}^{r}\binom{v+D-1}{D-1}=\binom{r+D}{D},
+\]
+as required by $P_D$. At degree $L+u$, for $0\le u\le L$, the
+coefficient of the product is
+\[
+ \sum_{v=u}^{L}\binom{v+D-1}{D-1}
+ =\binom ND-\binom{u+D-1}{D},
+\]
+whereas the coefficient of $q^L\lambda_{N,D}$ is $\binom{N-u}{D}$.
+Their difference is therefore
+\begin{equation}\label{eq:cu}
+ c_u=\binom ND-\binom{u+D-1}{D}-\binom{N-u}{D}.
+\end{equation}
+There are no terms above degree $2L$ in this part of the recurrence.
+
+Here $c_0=0$, and convexity gives $c_u\ge0$ for the remaining values
+of $u$. Indeed, the sequence $x\mapsto\binom{x}{D}$ is discretely
+convex for $x\ge D-1$: for $D\ge2$ its second forward difference is
+$\binom{x}{D-2}\ge0$, and for $D=1$ it is linear. Hence
+\[
+ u\longmapsto\binom{u+D-1}{D}+\binom{N-u}{D}
+\]
+is convex on the integer interval $0\le u\le L$ and attains a maximum
+at an endpoint. Its endpoint values are
+\[
+ \binom ND\qquad\text{and}\qquad
+ \binom{N-1}{D}+1\le\binom ND,
+\]
+the inequality following from Pascal's identity. This also covers
+$L=0$, when both endpoints coincide.
+
+Since $c_0=0$, the terms remaining after $P_D$ are divisible by
+$q^{L+1}$. Explicitly,
+\[
+ Q_D=\sum_{u=1}^{L}c_uq^{u-1}+q[L+1]Q_{D-1}\in\N[q].
+\]
+This proves \eqref{eq:Lambda-positive}, and \eqref{eq:ELambda}
+proves the lemma.
+\end{proof}
+
+\begin{corollary}\label{cor:Theta}
+For every $t\ge1$ and $0\le j\le t-1$, $\Theta_{t,j}(q)\in\N[q]$.
+\end{corollary}
+
+\begin{proof}
+The case $t=1$ is $\Theta_{1,0}=0$. For $t\ge2$, put $N=t-1$ and
+$D=N-j$. Rewriting \eqref{eq:Theta} gives
+\[
+ \Theta_{t,j}
+ =\left(E_0-\sum_{d=1}^{D}E_d\right)
+   +2\sum_{\substack{1\le d\le D\\d\text{ odd}}}E_d.
+\]
+The first summand is nonnegative by Lemma~\ref{lem:domination}, and
+the second is a sum of nonnegative polynomials.
+\end{proof}
+
+\begin{proof}[Proof of the positivity assertion in Theorem~\ref{thm:main}]
+For $k=0$, $S_{0,m}=[m]!$. For $k\ge1$, put $a=m-k$. The hypothesis
+$m\ge2k-1$ gives $a\ge k-1$, so Proposition~\ref{prop:decomposition}
+and Corollary~\ref{cor:Theta} imply $F_k(a)\in\N[q]$.
+Equation~\eqref{eq:SF} gives $S_{k,m}\in\N[q]$.
+\end{proof}
+
+\section{Sharpness of the range}\label{sec:sharpness}
+
+Below the threshold, the obstruction occurs in one of the first two
+possible nonzero coefficients. We use $[q^d]G$ to denote the coefficient
+of $q^d$ in a polynomial or formal power series $G$.
+
+\begin{lemma}\label{lem:low-coefficients}
+Let $t\ge3$ and $0\le a\le t-2$. Then $[q^d]F_t(a)=0$ for
+$0\le d\le a$, and
+\begin{align*}
+ [q^{a+1}]F_t(a)&=(-1)^t,\\
+ [q^{a+2}]F_t(a)&=\binom{a+1}{t-1}-(-1)^t(t-1).
+\end{align*}
+\end{lemma}
+
+\begin{proof}
+Work in $\Z[[q]]$. A product of two distinct factors from
+$q^{a+1},q^{a+2},\ldots$ has degree at least $2a+3$, so
+\[
+ \Pi_r(a)=\frac{\prod_{s=1}^{r}(1-q^{a+s})}{(1-q)^r}
+ \equiv\frac{1-q^{a+1}[r]}{(1-q)^r}\pmod{q^{2a+3}}.
+\]
+Substituting in \eqref{eq:F} and applying the ordinary binomial theorem
+gives
+\begin{equation}\label{eq:sharp-series}
+ F_t(a)\equiv
+ \frac{q^t}{(1-q)^t}
+ -q^{a+1}\frac{q^t-(2q-1)^t}{(1-q)^{t+1}}
+ \pmod{q^{2a+3}}.
+\end{equation}
+Both terms on the right have degree greater than $a$. At the next two
+degrees, the contribution of the first term is respectively $0$ and
+$\binom{a+1}{t-1}$, while
+\[
+ \frac{(2q-1)^t}{(1-q)^{t+1}}
+ =(-1)^t\bigl(1-(t-1)q+O(q^2)\bigr).
+\]
+The remaining numerator term $q^t$ contributes only in degree at least
+$a+t+1$. This gives the asserted coefficients.
+\end{proof}
+
+\begin{proof}[Proof of the sharpness assertion in Theorem~\ref{thm:main}]
+Suppose $k\ge3$ and $k\le m\le2k-2$, and put $a=m-k$.
+If $k$ is odd, Lemma~\ref{lem:low-coefficients} and \eqref{eq:SF} give
+\[
+ [q^{a+1}]S_{k,m}=-1.
+\]
+If $k\ge4$ is even, the coefficient of $q$ in $[a]!$ is
+$\max(a-1,0)$. Since $\binom{a+1}{k-1}\in\{0,1\}$, the same lemma
+gives
+\[
+ [q^{a+2}]S_{k,m}
+ =\binom{a+1}{k-1}-(k-1)+\max(a-1,0)<0.
+\]
+Thus there is a negative coefficient in either case.
+\end{proof}
+
+\section{Matrices with prescribed zero entries}\label{sec:matrices}
+
+We conclude by explaining the counting problem behind the conjecture.
+For a board $B\subseteq\{1,\ldots,m\}^2$, let $\mathfrak m_r(B,q)$
+be the number of $m\times m$ matrices over $\Fq$ of rank $r$ whose
+support is contained in $B$, and write
+\[
+ M_r(B,q)=\frac{\mathfrak m_r(B,q)}{(q-1)^r}
+\]
+for the reduced count. A bar denotes the complement in the square.
+Suppose $B$ consists of $k$ cells in distinct rows and columns. Choosing
+a rank-$r$ matrix supported on $B$ amounts to choosing $r$ cells and
+assigning a nonzero entry to each, so $M_r(B,q)=\binom kr$.
+The complement identity of Lewis and Morales
+\cite[Corollary~2.2]{LM} then gives
+\begin{equation}\label{eq:isolated-board}
+ M_m(\overline B,q)=q^{\binom m2-k}S_{k,m}(q).
+\end{equation}
+For $m\ge3$, the power of $q$ is nonnegative because $k\le m$.
+Thus Theorem~\ref{thm:main} proves coefficientwise positivity of this
+reduced count when $m\ge2k-1$. The cases $m\le2$ in this range follow
+directly; in particular, the count for $m=k=1$ is zero.
+
+For a permutation $w=w_1\cdots w_m\in\cS_m$, the diagram convention
+in \cite{LM} is the coinversion diagram
+\[
+ I_w=\{(i,w_j):i<j,\ w_i<w_j\}.
+\]
+The permutation
+\[
+ v_n=(2n-1)(2n)(2n-3)(2n-2)\cdots3\,4\,1\,2
+\]
+has $n$ diagram cells in distinct rows and columns. Hence
+\begin{equation}\label{eq:LM-matrix}
+ M_{2n}(\overline{I_{v_n}},q)=q^{2n(n-1)}S_{n,2n}(q),
+\end{equation}
+which is the family in Conjecture~6.8 of \cite{LM}.
+
+The same argument applies to
+$w=w_0s_{i_1}\cdots s_{i_k}\in\cS_m$, where $w_0=m\cdots2\,1$,
+$s_i$ swaps adjacent positions, and the distinct indices $i_r$ are
+pairwise nonadjacent. Such a permutation is a sequence of decreasingly
+ordered blocks, each of size one or two, with every size-two block
+increasing. It therefore avoids $123$, and its coinversion diagram
+consists of $k$ cells in distinct rows and columns. Since $m\ge2k$,
+\eqref{eq:isolated-board} yields
+$M_m(\overline{I_w},q)\in\N[q]$. This establishes this family of cases
+of the broader $123$-avoiding positivity conjecture
+\cite[Conjecture~6.9]{LM}.
+
+At $q=1$, the normalized sum $F_t(a)$ counts injections
+$\{1,\ldots,t\}\to\{1,\ldots,t+a\}$ having no fixed points, by
+inclusion--exclusion. The expansion \eqref{eq:positive-decomposition}
+provides a positive $q$-analogue in the range $a\ge t-1$.
+A statistic on these injections, or a direct interpretation of the
+universal coefficients $\Theta_{t,j}$, would explain combinatorially
+the positivity proved here by coefficient comparison.
+
+\begin{thebibliography}{1}
+\bibitem{LM}
+J.~B. Lewis and A.~H. Morales,
+\emph{Rook theory of the finite general linear group},
+Experiment. Math. \textbf{29} (2020), no.~3, 328--346;
+\href{https://arxiv.org/abs/1707.08192}{arXiv:1707.08192}.
+
+\bibitem[OPAC] J.~B.~Lewis, {\it Open Problems in Algebraic Combinatorics}, blog maintained by S.~Hopkins, \href{https://realopacblog.wordpress.com/2019/09/30/matrix-counting-over-finite-fields/}{realopacblog.wordpress.com/2019/09/30/matrix-counting-over-finite-fields/} (2019).
+
+\end{thebibliography}
+
+\end{document}
