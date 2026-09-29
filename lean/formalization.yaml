@@ -1,7 +1,5 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
-
-# formalization.yaml (v0.4)
-#
+# OPAC-012 project card, v0.4.
 # This file describes the Lean formalization contained in the `lean/`
 # subdirectory of https://github.com/pseudoeffective/opac012.
 #
@@ -11,28 +9,42 @@
 version: "v0.4"
 
 project:
-  name: "Lean formalization of OPAC-012"
+  name: "OPAC-012: coefficientwise positivity for alternating sums of q-factorials"
   description: >-
-    Lean 4 / mathlib formalization of the proof of OPAC-012, a positivity
-    conjecture arising from work of Lewis and Morales. The formal proof
-    follows the structure of the accompanying mathematical solution:
-    normalization of the original polynomial, a universal expansion in
-    Gaussian-binomial terms with coefficients Theta_{t,j}, and a
-    coefficientwise domination argument proving positivity.
+    A Lean 4 formalization of the Lewis–Morales OPAC-012 conjecture and a
+    stronger sharp-range theorem. For k ≤ m, the alternating q-factorial sum
+    S_{k,m} has nonnegative integer coefficients when 2k ≤ m+1. For k ≥ 3,
+    it has a negative coefficient when k ≤ m ≤ 2k−2. In particular,
+    S_{n,2n} is coefficientwise nonnegative for every natural n.
 
-  # Replace or supplement this with the human formalization authorship
-  # you want recorded publicly.
+  # The code was produced by Codex under user direction. 
   authors:
-    - "David Anderson"
-
-  responsible_maintainers:
-    - "David Anderson"
-
-  # TODO: replace with the license ultimately chosen for the repository.
+    - "OpenAI Codex"
+  responsible_maintainers: [David Anderson]
   license: "0BSD"
 
-
 sources:
+  - title: "Coefficientwise positivity for alternating sums of q-factorials"
+    type: "other"
+    id: "opac012-research-note.tex (September 9, 2026; supplied project source)"
+    location: "Theorem 1.1 and Sections 2–4"
+    relationship: "formalizes"
+    note: >-
+      The supplied, unsigned research note gives the stronger stable-range
+      positivity theorem, its sharpness assertion, and the proof using a
+      universal Gaussian-binomial expansion. Bibliographic authorship and
+      source license were not stated in the supplied TeX.
+  - title: "Rook theory of the finite general linear group"
+    authors: ["J. B. Lewis", "A. H. Morales"]
+    type: "article"
+    id: "arXiv:1707.08192"
+    location: "Conjecture 6.8"
+    relationship: "background"
+    note: >-
+      Original conjecture for the diagonal family S_{n,2n}, as cited in
+      the supplied research note; Experiment. Math. 29 (2020), no. 3,
+      328–346.
+
   - title: "OPAC-012"
     authors: []
     contributors:
@@ -59,138 +71,111 @@ sources:
       is formalized by the Lean development.
 
 
-related_formalizations: []
-
 
 classification:
-  arxiv:
-    - "math.CO"
-  msc2020:
-    # TODO: refine if desired once the paper's final MSC classification
-    # has been chosen.
-    - "05A30"
-
+  arxiv: ["math.CO"]
 
 status:
   scope: >-
-    Complete formalization of the main positivity theorem proved in the
-    accompanying OPAC-012 solution, together with the normalization,
-    q-factorial identities, universal expansion, coefficientwise
-    domination argument, and sharpness results needed for the proof.
-
+    Complete polynomial positivity and sharpness statements for natural
+    indices in the stated ranges. Includes the normalization identity,
+    universal expansion, and coefficientwise domination proof. The
+    finite-field matrix-counting interpretation in Section 5 of the
+    source note is outside this Lean development.
   sorry_count: 0
   sorry_in_definitions: 0
-
-  # TODO: fill this from `#print axioms` on the main theorem.
-  axioms: []
-
+  axioms: ["propext", "Classical.choice", "Quot.sound"]
   main_results:
-    # TODO: replace the declaration with the exact final theorem name
-    # from OPAC012/Main.lean.
-    - declaration: "TODO"
+    - declaration: "OPAC012.S_coeffNonneg"
       file: "OPAC012/Main.lean"
       sorry_count: 0
-
-      # TODO: copy the exact output of the axiom audit here.
-      axioms: []
-
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "OPAC012.opac012_coeffNonneg"
+      file: "OPAC012/Main.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "OPAC012.exists_neg_coeff_of_below_threshold"
+      file: "OPAC012/Sharpness.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
 
 automation:
   methods:
     - method: "agent"
-      models:
-        - "GPT-5.6 Sol"
-      framework: "ChatGPT / Codex"
+      models: ["GPT-6"]
+      framework: "OpenAI Codex in ChatGPT Work"
       tool_setup: >-
-        Interactive Lean 4 autoformalization against mathlib. The agent
-        had access to the mathematical proof and existing project files,
-        created and revised Lean modules, compiled them with Lake, and
-        iteratively repaired elaboration, typechecking, and proof errors.
+        Iterative Lean 4/Lake elaboration and Mathlib source inspection.
+        Lean is pinned to v4.34.1; Mathlib is pinned to v4.34.1 in the
+        Lake configuration and to a concrete revision in lake-manifest.json.
+        The final work session used GPT-6; model provenance for earlier
+        passes was not independently reconstructed.
       prompting_notes: >-
-        The formalization task was to translate the complete mathematical
-        proof of OPAC-012 into Lean while preserving the main architecture
-        of the argument and obtaining a fully compiling development with
-        no unresolved `sorry`.
-      notes: >-
-        The autoformalization was performed interactively with human
-        direction and review rather than as an unattended single-pass
-        generation.
-
-    - method: "manual"
-      tool_setup: >-
-        Human mathematical review, organization of the source proof,
-        selection of the formalization target, and review of the resulting
-        project structure and correspondence with the paper.
-
+        The user supplied a proof note and an autoformalization handoff,
+        directed completion of the Lean formalization, and requested
+        continued work through the sharpness theorem.
   notes: >-
-    The underlying mathematical solution itself was also AI-assisted.
-    As documented in the repository README and transcripts, the initial
-    solution and writeup were produced by Claude (Fable-5.1) with human
-    prompting and direction, and a later round of mathematical refereeing,
-    simplification, and exposition was carried out with ChatGPT before the
-    Lean autoformalization.
-
+    The agent wrote and checked the Lean proof interactively. A complete
+    Lake build succeeded, a search found no sorry/admit in the project
+    sources, and #print axioms for the principal results showed only the
+    three standard axioms listed above. Monetary cost and total wall time
+    were not recorded.
 
 fidelity:
   divergences: >-
-    The Lean development follows the mathematical proof at the level of
-    its principal reductions and arguments, but is not a line-by-line
-    translation. It introduces additional auxiliary lemmas, explicit
-    boundary-case handling, algebraic identities, and coercion/polynomial
-    manipulations required by Lean. No intentional weakening of the main
-    mathematical theorem is intended.
-
+    The source states the result for integer parameters 0 ≤ k ≤ m; Lean
+    uses natural indices with k ≤ m and expresses m ≥ 2k−1 as 2k ≤ m+1
+    to avoid truncated subtraction. The diagonal corollary is proved for
+    n = 0 as well as the source's n ≥ 1. The polynomial proof follows
+    the source's normalization, Gaussian-basis expansion, and domination
+    argument. Section 5's matrix-counting interpretation and the
+    identification with the reduced matrix count are not formalized.
 
 review:
   status: "self-assessed"
-  reviewers:
-    - "David Anderson"
+  reviewers: []
   notes: >-
-    The project compiles in Lean with no unresolved `sorry`. The
-    correspondence between the principal Lean declarations and the
-    mathematical proof has been reviewed during the interactive
-    autoformalization process. This entry should be updated if the
-    formalization later receives independent Lean or mathematical review.
-
+    Kernel checking, whole-project build, placeholder search, and axiom
+    audit were performed by the agent. No independent human review of
+    statement fidelity or proof correspondence is recorded here.
 
 alignment:
   namespace: "OPAC012"
-
   statements:
-    - source: "Preliminary q-integer and q-factorial identities"
-      lean: ""
-      module: "OPAC012.QFactorial"
-      status: "proved"
-
-    - source: "Normalization of S_{k,m} to F_k(m-k)"
-      lean: ""
+    - source: "Definition of S_{k,m} in Theorem 1.1"
+      lean: "OPAC012.S"
+      module: "OPAC012.Normalization"
+      status: "formalized"
+      note: "An integer polynomial, with ordinary binomial coefficients."
+    - source: "Normalization S_{k,m} = [m-k]! F_k(m-k), equation (3)"
+      lean: "OPAC012.S_eq_qFact_mul_F"
       module: "OPAC012.Normalization"
       status: "proved"
-
-    - source: "Universal Gaussian-binomial expansion of F_t(a)"
-      lean: ""
+    - source: "Universal Gaussian-binomial expansion, Section 2"
+      lean: "OPAC012.universal_expansion"
       module: "OPAC012.UniversalExpansion"
       status: "proved"
-
-    - source: "Coefficientwise domination and positivity of Theta_{t,j}"
-      lean: ""
+    - source: "Positivity of the universal coefficients, Section 3"
+      lean: "OPAC012.theta_coeffNonneg"
       module: "OPAC012.Domination"
       status: "proved"
-
-    - source: "Main OPAC-012 positivity theorem"
-      lean: "TODO"
+    - source: "Theorem 1.1, stable-range positivity"
+      lean: "OPAC012.S_coeffNonneg"
       module: "OPAC012.Main"
       status: "proved"
-
-    - source: "Sharpness results"
-      lean: ""
+    - source: "Lewis–Morales Conjecture 6.8 / OPAC-012"
+      lean: "OPAC012.opac012_coeffNonneg"
+      module: "OPAC012.Main"
+      status: "proved"
+    - source: "Theorem 1.1, sharpness for k ≥ 3"
+      lean: "OPAC012.exists_neg_coeff_of_below_threshold"
       module: "OPAC012.Sharpness"
       status: "proved"
-
-
-acknowledgements: >-
-  The formalization uses Lean 4 and mathlib. The mathematical problem is
-  OPAC-012 in the Open Problems in Algebraic Combinatorics collection and
-  is based on conjectures of Lewis and Morales. The mathematical solution
-  and subsequent Lean formalization were developed using AI-assisted
-  workflows documented in the surrounding repository.
+    - source: "Section 5, finite-field matrix-counting interpretation"
+      lean: ""
+      module: ""
+      status: "not-formalized"
+      note: "The algebraic positivity statement is formalized; the external counting identity is not."
