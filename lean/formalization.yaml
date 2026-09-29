@@ -1,0 +1,196 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+
+# formalization.yaml (v0.4)
+#
+# This file describes the Lean formalization contained in the `lean/`
+# subdirectory of https://github.com/pseudoeffective/opac012.
+#
+# The surrounding repository also contains the mathematical paper,
+# supplementary computations, and prompting transcripts.
+
+version: "v0.4"
+
+project:
+  name: "Lean formalization of OPAC-012"
+  description: >-
+    Lean 4 / mathlib formalization of the proof of OPAC-012, a positivity
+    conjecture arising from work of Lewis and Morales. The formal proof
+    follows the structure of the accompanying mathematical solution:
+    normalization of the original polynomial, a universal expansion in
+    Gaussian-binomial terms with coefficients Theta_{t,j}, and a
+    coefficientwise domination argument proving positivity.
+
+  # Replace or supplement this with the human formalization authorship
+  # you want recorded publicly.
+  authors:
+    - "David Anderson"
+
+  responsible_maintainers:
+    - "David Anderson"
+
+  # TODO: replace with the license ultimately chosen for the repository.
+  license: "TODO"
+
+
+sources:
+  - title: "OPAC-012"
+    authors: []
+    contributors:
+      - name: "Open Problems in Algebraic Combinatorics"
+        role: "problem source"
+      - name: "Lewis and Morales"
+        role: "conjecture origin"
+    id: "https://realopacblog.wordpress.com/"
+    type: "web post"
+    relationship: "background"
+    note: >-
+      OPAC-012 is based on positivity conjectures originating in work of
+      Lewis and Morales.
+
+  - title: "Solution of OPAC-012"
+    authors:
+      - "David Anderson"
+    id: "https://github.com/pseudoeffective/opac012"
+    type: "article"
+    location: "solution/opac012-solution.pdf"
+    relationship: "formalizes"
+    note: >-
+      This is the accompanying human-readable proof whose main argument
+      is formalized by the Lean development.
+
+
+related_formalizations: []
+
+
+classification:
+  arxiv:
+    - "math.CO"
+  msc2020:
+    # TODO: refine if desired once the paper's final MSC classification
+    # has been chosen.
+    - "05A30"
+
+
+status:
+  scope: >-
+    Complete formalization of the main positivity theorem proved in the
+    accompanying OPAC-012 solution, together with the normalization,
+    q-factorial identities, universal expansion, coefficientwise
+    domination argument, and sharpness results needed for the proof.
+
+  sorry_count: 0
+  sorry_in_definitions: 0
+
+  # TODO: fill this from `#print axioms` on the main theorem.
+  axioms: []
+
+  main_results:
+    # TODO: replace the declaration with the exact final theorem name
+    # from OPAC012/Main.lean.
+    - declaration: "TODO"
+      file: "OPAC012/Main.lean"
+      sorry_count: 0
+
+      # TODO: copy the exact output of the axiom audit here.
+      axioms: []
+
+
+automation:
+  methods:
+    - method: "agent"
+      models:
+        - "GPT-5.6 Sol"
+      framework: "ChatGPT / Codex"
+      tool_setup: >-
+        Interactive Lean 4 autoformalization against mathlib. The agent
+        had access to the mathematical proof and existing project files,
+        created and revised Lean modules, compiled them with Lake, and
+        iteratively repaired elaboration, typechecking, and proof errors.
+      prompting_notes: >-
+        The formalization task was to translate the complete mathematical
+        proof of OPAC-012 into Lean while preserving the main architecture
+        of the argument and obtaining a fully compiling development with
+        no unresolved `sorry`.
+      notes: >-
+        The autoformalization was performed interactively with human
+        direction and review rather than as an unattended single-pass
+        generation.
+
+    - method: "manual"
+      tool_setup: >-
+        Human mathematical review, organization of the source proof,
+        selection of the formalization target, and review of the resulting
+        project structure and correspondence with the paper.
+
+  notes: >-
+    The underlying mathematical solution itself was also AI-assisted.
+    As documented in the repository README and transcripts, the initial
+    solution and writeup were produced by Claude (Fable-5.1) with human
+    prompting and direction, and a later round of mathematical refereeing,
+    simplification, and exposition was carried out with ChatGPT before the
+    Lean autoformalization.
+
+
+fidelity:
+  divergences: >-
+    The Lean development follows the mathematical proof at the level of
+    its principal reductions and arguments, but is not a line-by-line
+    translation. It introduces additional auxiliary lemmas, explicit
+    boundary-case handling, algebraic identities, and coercion/polynomial
+    manipulations required by Lean. No intentional weakening of the main
+    mathematical theorem is intended.
+
+
+review:
+  status: "self-assessed"
+  reviewers:
+    - "David Anderson"
+  notes: >-
+    The project compiles in Lean with no unresolved `sorry`. The
+    correspondence between the principal Lean declarations and the
+    mathematical proof has been reviewed during the interactive
+    autoformalization process. This entry should be updated if the
+    formalization later receives independent Lean or mathematical review.
+
+
+alignment:
+  namespace: "OPAC012"
+
+  statements:
+    - source: "Preliminary q-integer and q-factorial identities"
+      lean: ""
+      module: "OPAC012.QFactorial"
+      status: "proved"
+
+    - source: "Normalization of S_{k,m} to F_k(m-k)"
+      lean: ""
+      module: "OPAC012.Normalization"
+      status: "proved"
+
+    - source: "Universal Gaussian-binomial expansion of F_t(a)"
+      lean: ""
+      module: "OPAC012.UniversalExpansion"
+      status: "proved"
+
+    - source: "Coefficientwise domination and positivity of Theta_{t,j}"
+      lean: ""
+      module: "OPAC012.Domination"
+      status: "proved"
+
+    - source: "Main OPAC-012 positivity theorem"
+      lean: "TODO"
+      module: "OPAC012.Main"
+      status: "proved"
+
+    - source: "Sharpness results"
+      lean: ""
+      module: "OPAC012.Sharpness"
+      status: "proved"
+
+
+acknowledgements: >-
+  The formalization uses Lean 4 and mathlib. The mathematical problem is
+  OPAC-012 in the Open Problems in Algebraic Combinatorics collection and
+  is based on conjectures of Lewis and Morales. The mathematical solution
+  and subsequent Lean formalization were developed using AI-assisted
+  workflows documented in the surrounding repository.
