@@ -29,7 +29,7 @@ project:
     - "David Anderson"
 
   # TODO: replace with the license ultimately chosen for the repository.
-  license: "TODO"
+  license: "0BSD"
 
 
 sources:
